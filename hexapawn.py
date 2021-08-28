@@ -2,9 +2,9 @@ from copy import deepcopy
 #Parminder Singh
 #hexapawn
 
-#static eval on line 34
-#minMaxSearch line 98
-#move gen is on line 343
+#static eval on line 38
+#minMaxSearch line 102
+#move gen is on line 350
 
 def hexapawn(inputBoard, boardSize, playerColor, lookAhead):
     startGame = gameSetup(inputBoard, boardSize, playerColor, lookAhead)
@@ -17,6 +17,10 @@ def hexapawn(inputBoard, boardSize, playerColor, lookAhead):
     else:
         return(startGame.board)
 
+
+#this is merely the game setup class, it looks at the board, boardSize, playerColor, and how far to lookahead
+#it also keeps track of the score from the staticEvaluation() function.
+#it also keeps track of the currentPlayer.
 class gameSetup(object): 
     def __init__(self, board, boardSize, playerColor, lookAhead):
         self.board = board 
@@ -27,7 +31,7 @@ class gameSetup(object):
         self.currentPlayer = playerColor 
         self.searchLevel = 0 #current level of tree
         
-    #My static evaluation function is same as the one discussed in class slides
+    #My static evaluation function is same as the one discussed in class slides (episode 13)
     #If player color piece reaches the other end of the board +10
     #If opposite of player color pieces reaches the other end of the board -10
     #Else score = (number of playerpieces - number of opposite pieces)
@@ -169,6 +173,7 @@ def findPieces(currBoard, target):
 #all movement functions get the current board state and iterates over a column and row.
 #inputs are the current board, column and row
 #the column and row inputs are coming in from the whiteStates and blackStates functions
+#outputs the board movements and sent to the whiteStates and blackStates functions.
 
 def moveWhiteDown(currBoard, column, row):
     board = (currBoard.board).copy()
@@ -340,6 +345,8 @@ def blackStates(black,currBoard):
             currBoard.score = 10
     return states
 
+
+#function generates what moves are possible, based on whos turn it is (white or black)
 def moveGenerator(currBoard):
     if (currBoard.currentPlayer == 'w'):
         white = findPieces(currBoard, 'w')
@@ -350,6 +357,6 @@ def moveGenerator(currBoard):
     return states 
 
 
-hexapawn(["www","---","bbb"],3,'b',2)
+#hexapawn(["www","---","bbb"],3,'b',2)
 #hexapawn(['www', 'b--', '-bb'],3,'w',2)
 #hexapawn(['w-w', 'bw-', '-bb'],3,'b',2)
