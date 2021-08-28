@@ -2,12 +2,9 @@ from copy import deepcopy
 #Parminder Singh
 #hexapawn
 
-#hexapawn function line 10
-#static eval on line 37
-#minMaxSearch line 101
-#move gen is on line 344
-
-
+#static eval on line 34
+#minMaxSearch line 98
+#move gen is on line 343
 
 def hexapawn(inputBoard, boardSize, playerColor, lookAhead):
     startGame = gameSetup(inputBoard, boardSize, playerColor, lookAhead)
@@ -33,7 +30,7 @@ class gameSetup(object):
     #My static evaluation function is same as the one discussed in class slides
     #If player color piece reaches the other end of the board +10
     #If opposite of player color pieces reaches the other end of the board -10
-    #Else score = number of playerpieces - number of opposite pieces
+    #Else score = (number of playerpieces - number of opposite pieces)
     def staticEvaluation(self):
         blackPieces = 0 
         whitePieces = 0
@@ -62,22 +59,22 @@ class gameSetup(object):
             elif whiteLost == False:
                 self.score = 10
             else:
-                self.score = (whitePieces - blackPieces)
+                self.score = (whitePieces - blackPieces) #player color - nonplayer color
         elif (self.playerColor) == 'b':
             if blackLost == True:
                 self.score = -10
             elif blackLost == False:
                 self.score = 10
             else:
-                self.score = (blackPieces - whitePieces)
+                self.score = (blackPieces - whitePieces) #playercolor - non player color
         return self.score
 
 class minMaxTree(object):
     def __init__(self, treeBoard):
-        self.treeBoard = treeBoard # game should be hexapawn object
+        self.treeBoard = treeBoard 
         self.parent = None
         self.children = []
-        self.level = None # MIN or MAX
+        self.level = None # see if its MIN or MAX to choose from
     
     def addChild(self, child):
         self.children.append(child)
@@ -131,6 +128,8 @@ def minMaxSearch(head, lookAhead):
         return minBoard
 
 # tree used in the minMaxSearch function
+#input head node of tree
+#also returns the head node
 def createTree(head):
     if(head.treeBoard.lookAhead > 0):
         nextLevel = moveGenerator(head.treeBoard)
@@ -289,7 +288,7 @@ def moveBlackDiagonalRight(currBoard, column, row):
         return None
 
 #stATes----------------------------------------------------------
-
+#returns the states when the (input) current player is white AFTER you locate all the pieces on the (input) board
 def whiteStates(white,currBoard):
     states = []
     for i in range(len(white)):
@@ -315,7 +314,7 @@ def whiteStates(white,currBoard):
             currBoard.score = 10
     return states
 
-
+#returns the states when the (input) current player is black AFTER you locate all the pieces on the (input) board
 def blackStates(black,currBoard):
     states = []
     for i in range(len(black)):
@@ -351,5 +350,6 @@ def moveGenerator(currBoard):
     return states 
 
 
-hexapawn(["www","---","bbb"],3,'w',2)
-#hexapawn(["www","---","bbb"],3,'w',2)
+hexapawn(["www","---","bbb"],3,'b',2)
+#hexapawn(['www', 'b--', '-bb'],3,'w',2)
+#hexapawn(['w-w', 'bw-', '-bb'],3,'b',2)
